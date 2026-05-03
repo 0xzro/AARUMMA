@@ -2,6 +2,7 @@ const dino = document.getElementById("dino");
 const block = document.getElementById("block");
 const scoreText = document.getElementById("score");
 const jumpBtn = document.getElementById("jumpBtn");
+const restartBtn = document.getElementById("restartBtn");
 const gameOverText = document.getElementById("gameOver");
 
 let score = 0;
@@ -17,12 +18,14 @@ function jump() {
 }
 
 // controls
-document.addEventListener("keydown", jump);
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") jump();
+});
 document.addEventListener("touchstart", jump);
 jumpBtn.addEventListener("click", jump);
 
 // collision check
-setInterval(() => {
+let gameLoop = setInterval(() => {
   if (isGameOver) return;
 
   const dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("bottom"));
@@ -33,8 +36,14 @@ setInterval(() => {
 
     block.style.animation = "none";
     gameOverText.classList.remove("hidden");
+    restartBtn.classList.remove("hidden");
   } else {
     score++;
     scoreText.innerText = "Score: " + score;
   }
 }, 100);
+
+// restart game
+restartBtn.addEventListener("click", () => {
+  location.reload();
+});
