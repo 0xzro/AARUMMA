@@ -1,15 +1,47 @@
-#jumpBtn {
-  margin-top: 15px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background: #ffcc00;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+body {
+  text-align: center;
+  font-family: Arial;
+  background: #111;
+  color: white;
 }
 
-#jumpBtn:active {
-  transform: scale(0.95);
+.game {
+  width: 350px;
+  height: 160px;
+  border-bottom: 2px solid white;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+#dino {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  font-size: 32px;
+}
+
+#block {
+  position: absolute;
+  bottom: 0;
+  right: -50px;
+  font-size: 28px;
+  animation: move 3s linear infinite;
+}
+
+@keyframes move {
+  0% { right: -50px; }
+  100% { right: 400px; }
+}
+
+.jump {
+  animation: jump 0.5s linear;
+}
+
+@keyframes jump {
+  0% { bottom: 0; }
+  50% { bottom: 80px; }
+  100% { bottom: 0; }
 }
 
 #gameOver {
@@ -23,4 +55,23 @@
 
 .hidden {
   display: none;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#jumpBtn {
+  background: #00ff99;
+  color: black;
+}
+
+#restartBtn {
+  background: #ff4444;
+  color: white;
 }
