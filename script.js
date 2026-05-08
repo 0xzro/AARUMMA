@@ -1,49 +1,53 @@
-const dino = document.getElementById("dino");
-const block = document.getElementById("block");
+const player = document.getElementById("player");
+const enemy = document.getElementById("enemy");
 const scoreText = document.getElementById("score");
-const jumpBtn = document.getElementById("jumpBtn");
-const restartBtn = document.getElementById("restartBtn");
-const gameOverText = document.getElementById("gameOver");
 
 let score = 0;
-let isGameOver = false;
 
 function jump() {
-  if (!dino.classList.contains("jump") && !isGameOver) {
-    dino.classList.add("jump");
+
+  if(player.classList != "jump") {
+
+    player.classList.add("jump");
+
     setTimeout(() => {
-      dino.classList.remove("jump");
-    }, 500);
+      player.classList.remove("jump");
+    }, 700);
   }
 }
 
-// controls
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") jump();
-});
-document.addEventListener("touchstart", jump);
-jumpBtn.addEventListener("click", jump);
+setInterval(() => {
 
-// collision check
-let gameLoop = setInterval(() => {
-  if (isGameOver) return;
+  let playerTop =
+    parseInt(
+      window.getComputedStyle(player)
+      .getPropertyValue("bottom")
+    );
 
-  const dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("bottom"));
-  const blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue("right"));
+  let enemyLeft =
+    parseInt(
+      window.getComputedStyle(enemy)
+      .getPropertyValue("left")
+    );
 
-  if (blockLeft > 280 && blockLeft < 320 && dinoTop < 30) {
-    isGameOver = true;
+  if(enemyLeft < 120 && enemyLeft > 40 && playerTop < 80) {
 
-    block.style.animation = "none";
-    gameOverText.classList.remove("hidden");
-    restartBtn.classList.remove("hidden");
-  } else {
-    score++;
-    scoreText.innerText = "Score: " + score;
+    alert("AMMA CAUGHT YOU 😭");
+
+    location.reload();
   }
-}, 100);
 
-// restart game
-restartBtn.addEventListener("click", () => {
-  location.reload();
+}, 10);
+
+setInterval(() => {
+  score++;
+  scoreText.innerText = "Score: " + score;
+}, 1000);
+
+document.addEventListener("keydown", (e) => {
+  if(e.code === "Space") {
+    jump();
+  }
 });
+
+document.addEventListener("touchstart", jump);
