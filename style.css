@@ -1,77 +1,81 @@
 body {
+  margin: 0;
+  background: black;
+  color: white;
   text-align: center;
   font-family: Arial;
-  background: #111;
-  color: white;
-}
-
-.game {
-  width: 350px;
-  height: 160px;
-  border-bottom: 2px solid white;
-  margin: auto;
-  position: relative;
   overflow: hidden;
 }
 
-#dino {
-  position: absolute;
-  bottom: 0;
-  left: 20px;
-  font-size: 32px;
+h1 {
+  margin-top: 20px;
 }
 
-#block {
-  position: absolute;
-  bottom: 0;
-  right: -50px;
-  font-size: 28px;
-  animation: move 3s linear infinite;
+.game {
+  width: 100%;
+  height: 300px;
+  border-bottom: 4px solid white;
+  position: relative;
+  overflow: hidden;
+  margin-top: 40px;
 }
 
-@keyframes move {
-  0% { right: -50px; }
-  100% { right: 400px; }
+#player {
+  position: absolute;
+  bottom: 0;
+  left: 40px;
+  width: 80px;
+  height: 80px;
+}
+
+#enemy {
+  position: absolute;
+  bottom: 0;
+  right: -100px;
+  width: 80px;
+  height: 80px;
+  animation: enemyMove 2s linear infinite;
+}
+
+#player img,
+#enemy img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
 }
 
 .jump {
-  animation: jump 0.5s linear;
+  animation: jump 0.7s;
 }
 
 @keyframes jump {
   0% { bottom: 0; }
-  50% { bottom: 80px; }
+  50% { bottom: 170px; }
   100% { bottom: 0; }
 }
 
-#gameOver {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 24px;
-  color: red;
-}
-
-.hidden {
-  display: none;
+@keyframes enemyMove {
+  from { right: -100px; }
+  to { right: 100%; }
 }
 
 button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+  margin-top: 30px;
+  padding: 15px 40px;
+  font-size: 20px;
   border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-#jumpBtn {
+  border-radius: 15px;
   background: #00ff99;
-  color: black;
 }
 
-#restartBtn {
-  background: #ff4444;
-  color: white;
+#enemy img {
+  animation: shake 0.2s infinite;
+}
+
+@keyframes shake {
+  0% { transform: rotate(2deg); }
+  50% { transform: rotate(-2deg); }
+  100% { transform: rotate(2deg); }
 }
