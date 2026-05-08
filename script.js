@@ -97,7 +97,7 @@ function moveMom(){
         }
 
         // WIN
-        if(score >= 15){
+        if(score >= 3){
             girlVictory();
         }
     }
