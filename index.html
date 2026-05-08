@@ -1,32 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LOVE ESCAPE 💜</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOVE ESCAPE 💜</title>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:black;
+    overflow:hidden;
+    font-family:Arial, sans-serif;
+    text-align:center;
+    color:white;
+}
+
+h1{
+    margin-top:20px;
+    font-size:42px;
+}
+
+#game{
+    position:relative;
+    width:100%;
+    height:420px;
+    margin-top:20px;
+    border-top:3px solid #b84dff;
+    border-bottom:3px solid #b84dff;
+    overflow:hidden;
+}
+
+.character{
+    position:absolute;
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border-radius:25px;
+    border:4px solid #b84dff;
+    box-shadow:0 0 20px #b84dff;
+}
+
+#girl{
+    left:40px;
+    bottom:20px;
+}
+
+#mom{
+    right:40px;
+    bottom:20px;
+    animation:moveMom 2s infinite alternate;
+}
+
+@keyframes moveMom{
+    from{
+        right:40px;
+    }
+    to{
+        right:220px;
+    }
+}
+
+#score{
+    margin-top:25px;
+    font-size:38px;
+    font-weight:bold;
+}
+
+#jumpBtn{
+    margin-top:30px;
+    padding:20px 60px;
+    border:none;
+    border-radius:25px;
+    background:#00ff99;
+    color:black;
+    font-size:32px;
+    font-weight:bold;
+    box-shadow:0 0 25px #00ff99;
+}
+
+.victory-popup{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.victory-card{
+    width:85%;
+    max-width:350px;
+    background:#111;
+    border:3px solid #b84dff;
+    border-radius:35px;
+    padding:30px;
+    box-shadow:0 0 40px #b84dff;
+    animation:popup 0.4s ease;
+}
+
+@keyframes popup{
+    from{
+        transform:scale(0.5);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.winner-photo{
+    width:140px;
+    height:140px;
+    border-radius:35px;
+    border:5px solid white;
+    object-fit:cover;
+    margin-bottom:20px;
+}
+
+.victory-card h2{
+    font-size:36px;
+    margin:10px 0;
+}
+
+.victory-card p{
+    font-size:24px;
+    color:#d9a3ff;
+}
+
+#restartBtn{
+    margin-top:20px;
+    padding:15px 35px;
+    border:none;
+    border-radius:20px;
+    background:#00ff99;
+    color:black;
+    font-size:22px;
+    font-weight:bold;
+}
+</style>
 </head>
+
 <body>
 
 <h1>LOVE ESCAPE 💜</h1>
 
-<div class="game">
+<div id="game">
 
-  <div id="player">
-    <img src="girl.png">
-  </div>
+    <!-- GIRL -->
+    <img
+      id="girl"
+      class="character"
+      src="girl.jpg"
+    >
 
-  <div id="enemy">
-    <img src="mother.png">
-  </div>
+    <!-- MOM -->
+    <img
+      id="mom"
+      class="character"
+      src="mom.jpg"
+    >
 
 </div>
 
-<h2 id="score">Score: 0</h2>
+<div id="score">Score: 0</div>
 
-<button onclick="jump()">JUMP 🚀</button>
+<button id="jumpBtn">JUMP 🚀</button>
 
-<script src="script.js"></script>
+<script>
+
+const girl = document.getElementById("girl");
+const mom = document.getElementById("mom");
+const scoreText = document.getElementById("score");
+const jumpBtn = document.getElementById("jumpBtn");
+
+let jumping = false;
+let score = 0;
+let gameOver = false;
+
+// JUMP
+jumpBtn.addEventListener("click", () => {
+
+    if(jumping || gameOver) return;
+
+    jumping = true;
+
+    let up = 20;
+
+    const jumpUp = setInterval(() => {
+
+        if(up >= 220){
+            clearInterval(jumpUp);
+
+            const fall = setInterval(() => {
+
+                up -= 10;
+                girl.style.bottom = up + "px";
+
+                if(up <= 20){
+                    clearInterval(fall);
+                    jumping = false;
+                }
+
+            },20);
+
+        }
+
+        up += 10;
+        girl.style.bottom = up + "px";
+
+    },20);
+
+});
+
+// SCORE
+const scoreInterval = setInterval(() => {
+
+    if(gameOver) return;
+
+    score++;
+    scoreText.innerHTML = "Score: " + score;
+
+    if(score >= 15){
+        girlVictory();
+    }
+
+},1000);
+
+// COLLISION
+setInterval(() => {
+
+    if(gameOver) return;
+
+    const girlRect = girl.getBoundingClientRect();
+    const momRect = mom.getBoundingClientRect();
+
+    if(
+        girlRect.right > momRect.left &&
+        girlRect.left < momRect.right &&
+        girlRect.bottom > momRect.top &&
+        girlRect.top < momRect.bottom
+    ){
+        momVictory();
+    }
+
+},100);
+
+// MOM WIN
+function momVictory(){
+
+    gameOver = true;
+
+    document.body.innerHTML += `
+    <div class="victory-popup">
+        <div class="victory-card">
+
+            <img src="mom.jpg" class="winner-photo">
+
+            <h2>👑 MOM WINS 👑</h2>
+
+            <p>💜💕😍 Mother Caught Her 😭</p>
+
+            <button id="restartBtn" onclick="location.reload()">
+                PLAY AGAIN 🔥
+            </button>
+
+        </div>
+    </div>
+    `;
+}
+
+// GIRL WIN
+function girlVictory(){
+
+    gameOver = true;
+
+    document.body.innerHTML += `
+    <div class="victory-popup">
+        <div class="victory-card">
+
+            <img src="girl.jpg" class="winner-photo">
+
+            <h2>💜 LOVE ESCAPE 💜</h2>
+
+            <p>✨🥳💕 She Escaped Successfully 💕</p>
+
+            <button id="restartBtn" onclick="location.reload()">
+                PLAY AGAIN 🔥
+            </button>
+
+        </div>
+    </div>
+    `;
+}
+
+</script>
 
 </body>
 </html>
