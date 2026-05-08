@@ -1,81 +1,128 @@
-body {
-  margin: 0;
-  background: black;
-  color: white;
-  text-align: center;
-  font-family: Arial;
-  overflow: hidden;
+body{
+    margin:0;
+    padding:0;
+    background:#000;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    text-align:center;
+    color:white;
 }
 
-h1 {
-  margin-top: 20px;
+h1{
+    margin-top:15px;
+    font-size:40px;
+    color:#d580ff;
 }
 
-.game {
-  width: 100%;
-  height: 300px;
-  border-bottom: 4px solid white;
-  position: relative;
-  overflow: hidden;
-  margin-top: 40px;
+#game{
+    position:relative;
+    width:100%;
+    height:420px;
+    margin-top:20px;
+    overflow:hidden;
+    border-top:3px solid #b84dff;
+    border-bottom:3px solid #b84dff;
 }
 
-#player {
-  position: absolute;
-  bottom: 0;
-  left: 40px;
-  width: 80px;
-  height: 80px;
+.character{
+    position:absolute;
+    width:90px;
+    height:90px;
+    border-radius:25px;
+    border:4px solid #b84dff;
+    object-fit:cover;
+    box-shadow:0 0 20px #b84dff;
 }
 
-#enemy {
-  position: absolute;
-  bottom: 0;
-  right: -100px;
-  width: 80px;
-  height: 80px;
-  animation: enemyMove 2s linear infinite;
+#girl{
+    left:40px;
+    bottom:20px;
 }
 
-#player img,
-#enemy img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid white;
+#mom{
+    right:-120px;
+    bottom:20px;
 }
 
-.jump {
-  animation: jump 0.7s;
+#score{
+    margin-top:25px;
+    font-size:35px;
+    font-weight:bold;
 }
 
-@keyframes jump {
-  0% { bottom: 0; }
-  50% { bottom: 170px; }
-  100% { bottom: 0; }
+#jumpBtn{
+    margin-top:25px;
+    padding:18px 60px;
+    border:none;
+    border-radius:25px;
+    background:#00ff99;
+    color:black;
+    font-size:28px;
+    font-weight:bold;
+    box-shadow:0 0 20px #00ff99;
 }
 
-@keyframes enemyMove {
-  from { right: -100px; }
-  to { right: 100%; }
+.victory-popup{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
 }
 
-button {
-  margin-top: 30px;
-  padding: 15px 40px;
-  font-size: 20px;
-  border: none;
-  border-radius: 15px;
-  background: #00ff99;
+.victory-card{
+    width:85%;
+    max-width:350px;
+    background:#111;
+    border:3px solid #b84dff;
+    border-radius:35px;
+    padding:30px;
+    box-shadow:0 0 40px #b84dff;
+    animation:popup 0.4s ease;
 }
 
-#enemy img {
-  animation: shake 0.2s infinite;
+@keyframes popup{
+    from{
+        transform:scale(0.5);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
 }
 
-@keyframes shake {
-  0% { transform: rotate(2deg); }
-  50% { transform: rotate(-2deg); }
-  100% { transform: rotate(2deg); }
+.winner-photo{
+    width:140px;
+    height:140px;
+    border-radius:30px;
+    border:5px solid white;
+    object-fit:cover;
+    margin-bottom:15px;
+}
+
+.victory-card h2{
+    font-size:32px;
+    margin:10px 0;
+}
+
+.victory-card p{
+    font-size:22px;
+    color:#d580ff;
+}
+
+#restartBtn{
+    margin-top:20px;
+    padding:15px 35px;
+    border:none;
+    border-radius:20px;
+    background:#00ff99;
+    color:black;
+    font-size:22px;
+    font-weight:bold;
 }
