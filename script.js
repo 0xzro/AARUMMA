@@ -9,16 +9,16 @@ let jumping = false;
 let score = 0;
 let gameOver = false;
 
-// BETTER GAME BALANCE
+// GAME SPEED
 let gameSpeed = 5.5;
 
-// START POSITION
+// MOM POSITION
 let momPosition = -160;
 
-// SMALLER COLLISION SIZE
+// SMALLER HITBOX
 const hitboxReduce = 20;
 
-// JUMP SYSTEM
+// JUMP BUTTON
 jumpBtn.addEventListener("click", function(){
 
     if(jumping || gameOver) return;
@@ -27,30 +27,41 @@ jumpBtn.addEventListener("click", function(){
 
     let position = 20;
 
-    // FAST UP
+    // SMOOTH JUMP UP
     const jumpUp = setInterval(function(){
 
         if(position >= 200){
 
             clearInterval(jumpUp);
 
-            // FALL DOWN
+            // SMOOTH FALL
+            let fallSpeed = 6;
+
             const jumpDown = setInterval(function(){
 
-                position -= 16;
+                position -= fallSpeed;
+
+                // GRAVITY EFFECT
+                fallSpeed += 0.7;
 
                 girl.style.bottom = position + "px";
 
+                // LANDING
                 if(position <= 20){
 
                     clearInterval(jumpDown);
 
-                    girl.style.bottom = "20px";
+                    // SOFT LANDING EFFECT
+                    girl.style.bottom = "16px";
+
+                    setTimeout(() => {
+                        girl.style.bottom = "20px";
+                    },60);
 
                     jumping = false;
                 }
 
-            },15);
+            },20);
 
         }
 
@@ -62,12 +73,11 @@ jumpBtn.addEventListener("click", function(){
 
 });
 
-// MAIN GAME LOOP
+// GAME LOOP
 function moveMom(){
 
     if(gameOver) return;
 
-    // MOVE FASTER
     momPosition += gameSpeed;
 
     mom.style.right = momPosition + "px";
@@ -99,14 +109,12 @@ function moveMom(){
 
 moveMom();
 
-// BETTER COLLISION SYSTEM
+// COLLISION
 function checkCollision(){
 
     const girlRect = girl.getBoundingClientRect();
-
     const momRect = mom.getBoundingClientRect();
 
-    // REDUCED HITBOX
     const girlLeft = girlRect.left + hitboxReduce;
     const girlRight = girlRect.right - hitboxReduce;
     const girlTop = girlRect.top + hitboxReduce;
@@ -141,7 +149,7 @@ function momVictory(){
 
             <img src="mother.png" class="winner-photo">
 
-            <h2>👑 Wo Wo MOM WINS 👑</h2>
+            <h2>👑 MOM WINS 👑</h2>
 
             <p>💜💕😍 Mother Caught Her 😭</p>
 
@@ -181,4 +189,4 @@ function girlVictory(){
     `;
 
     document.body.appendChild(popup);
-}
+} 
