@@ -1,3 +1,5 @@
+/* style.css */
+
 body{
     margin:0;
     padding:0;
@@ -29,9 +31,9 @@ h1{
     width:90px;
     height:90px;
     border-radius:25px;
-    border:4px solid #b84dff;
+    border:4px solid #fff;
     object-fit:cover;
-    box-shadow:0 0 20px #b84dff;
+    background:#111;
 }
 
 #girl{
@@ -59,7 +61,6 @@ h1{
     color:black;
     font-size:28px;
     font-weight:bold;
-    box-shadow:0 0 20px #00ff99;
 }
 
 .victory-popup{
@@ -82,28 +83,17 @@ h1{
     border:3px solid #b84dff;
     border-radius:35px;
     padding:30px;
-    box-shadow:0 0 40px #b84dff;
-    animation:popup 0.4s ease;
-}
-
-@keyframes popup{
-    from{
-        transform:scale(0.5);
-        opacity:0;
-    }
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
+    text-align:center;
 }
 
 .winner-photo{
     width:140px;
     height:140px;
-    border-radius:30px;
-    border:5px solid white;
+    border-radius:25px;
+    border:4px solid white;
     object-fit:cover;
-    margin-bottom:15px;
+    background:#222;
+    margin-bottom:20px;
 }
 
 .victory-card h2{
