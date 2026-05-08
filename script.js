@@ -1,53 +1,146 @@
-const player = document.getElementById("player");
-const enemy = document.getElementById("enemy");
+const girl = document.getElementById("girl");
+const mom = document.getElementById("mom");
 const scoreText = document.getElementById("score");
+const jumpBtn = document.getElementById("jumpBtn");
 
+let jumping = false;
 let score = 0;
+let gameOver = false;
 
-function jump() {
+let momPosition = -120;
 
-  if(player.classList != "jump") {
+// JUMP BUTTON
+jumpBtn.addEventListener("click", function(){
 
-    player.classList.add("jump");
+    if(jumping || gameOver) return;
 
-    setTimeout(() => {
-      player.classList.remove("jump");
-    }, 700);
-  }
-}
+    jumping = true;
 
-setInterval(() => {
+    let position = 20;
 
-  let playerTop =
-    parseInt(
-      window.getComputedStyle(player)
-      .getPropertyValue("bottom")
-    );
+    const jumpUp = setInterval(function(){
 
-  let enemyLeft =
-    parseInt(
-      window.getComputedStyle(enemy)
-      .getPropertyValue("left")
-    );
+        if(position >= 220){
 
-  if(enemyLeft < 120 && enemyLeft > 40 && playerTop < 80) {
+            clearInterval(jumpUp);
 
-    alert("AMMA CAUGHT YOU 😭");
+            const jumpDown = setInterval(function(){
 
-    location.reload();
-  }
+                position -= 10;
+                girl.style.bottom = position + "px";
 
-}, 10);
+                if(position <= 20){
+                    clearInterval(jumpDown);
+                    jumping = false;
+                }
 
-setInterval(() => {
-  score++;
-  scoreText.innerText = "Score: " + score;
-}, 1000);
+            },20);
 
-document.addEventListener("keydown", (e) => {
-  if(e.code === "Space") {
-    jump();
-  }
+        }
+
+        position += 10;
+        girl.style.bottom = position + "px";
+
+    },20);
+
 });
 
-document.addEventListener("touchstart", jump);
+// MOM MOVEMENT
+function moveMom(){
+
+    if(gameOver) return;
+
+    momPosition += 8;
+    mom.style.right = momPosition + "px";
+
+    if(momPosition > window.innerWidth){
+
+        momPosition = -120;
+
+        score++;
+
+        scoreText.innerHTML = "Score: " + score;
+
+        if(score >= 15){
+            girlVictory();
+        }
+    }
+
+    checkCollision();
+
+    requestAnimationFrame(moveMom);
+}
+
+moveMom();
+
+// COLLISION
+function checkCollision(){
+
+    const girlRect = girl.getBoundingClientRect();
+    const momRect = mom.getBoundingClientRect();
+
+    if(
+        girlRect.right > momRect.left &&
+        girlRect.left < momRect.right &&
+        girlRect.bottom > momRect.top &&
+        girlRect.top < momRect.bottom
+    ){
+        momVictory();
+    }
+}
+
+// MOM WIN
+function momVictory(){
+
+    gameOver = true;
+
+    const popup = document.createElement("div");
+
+    popup.className = "victory-popup";
+
+    popup.innerHTML = `
+        <div class="victory-card">
+
+            <img src="mom.jpg" class="winner-photo">
+
+            <h2>👑 MOM WINS 👑</h2>
+
+            <p>💜💕😍 Mother Caught Her 😭</p>
+
+            <button id="restartBtn" onclick="location.reload()">
+                PLAY AGAIN 🔥
+            </button>
+
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+}
+
+// GIRL WIN
+function girlVictory(){
+
+    gameOver = true;
+
+    const popup = document.createElement("div");
+
+    popup.className = "victory-popup";
+
+    popup.innerHTML = `
+        <div class="victory-card">
+
+            <img src="girl.jpg" class="winner-photo">
+
+            <h2>💜 LOVE ESCAPE 💜</h2>
+
+            <p>✨🥳💕 She Escaped Successfully 💕</p>
+
+            <button id="restartBtn" onclick="location.reload()">
+                PLAY AGAIN 🔥
+            </button>
+
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+}
