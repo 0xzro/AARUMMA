@@ -9,11 +9,14 @@ let jumping = false;
 let score = 0;
 let gameOver = false;
 
-// START SPEED
-let gameSpeed = 3;
+// BETTER GAME BALANCE
+let gameSpeed = 5.5;
 
-// MOM START POSITION
-let momPosition = -120;
+// START POSITION
+let momPosition = -160;
+
+// SMALLER COLLISION SIZE
+const hitboxReduce = 20;
 
 // JUMP SYSTEM
 jumpBtn.addEventListener("click", function(){
@@ -24,17 +27,17 @@ jumpBtn.addEventListener("click", function(){
 
     let position = 20;
 
-    // JUMP UP
+    // FAST UP
     const jumpUp = setInterval(function(){
 
-        if(position >= 180){
+        if(position >= 200){
 
             clearInterval(jumpUp);
 
             // FALL DOWN
             const jumpDown = setInterval(function(){
 
-                position -= 14;
+                position -= 16;
 
                 girl.style.bottom = position + "px";
 
@@ -51,7 +54,7 @@ jumpBtn.addEventListener("click", function(){
 
         }
 
-        position += 14;
+        position += 16;
 
         girl.style.bottom = position + "px";
 
@@ -64,28 +67,26 @@ function moveMom(){
 
     if(gameOver) return;
 
-    // MOVE MOM
+    // MOVE FASTER
     momPosition += gameSpeed;
 
     mom.style.right = momPosition + "px";
 
-    // IF MOM CROSSES SCREEN
+    // RESET
     if(momPosition > window.innerWidth){
 
-        // RESET POSITION
-        momPosition = -120;
+        momPosition = -160;
 
-        // INCREASE SCORE
         score++;
 
         scoreText.innerHTML = "Score: " + score;
 
-        // SLOWLY INCREASE SPEED
-        if(gameSpeed < 14){
-            gameSpeed += 0.4;
+        // SLOW SPEED INCREASE
+        if(gameSpeed < 13){
+            gameSpeed += 0.25;
         }
 
-        // GIRL WIN
+        // WIN
         if(score >= 15){
             girlVictory();
         }
@@ -98,24 +99,35 @@ function moveMom(){
 
 moveMom();
 
-// COLLISION DETECTION
+// BETTER COLLISION SYSTEM
 function checkCollision(){
 
     const girlRect = girl.getBoundingClientRect();
 
     const momRect = mom.getBoundingClientRect();
 
+    // REDUCED HITBOX
+    const girlLeft = girlRect.left + hitboxReduce;
+    const girlRight = girlRect.right - hitboxReduce;
+    const girlTop = girlRect.top + hitboxReduce;
+    const girlBottom = girlRect.bottom - hitboxReduce;
+
+    const momLeft = momRect.left + hitboxReduce;
+    const momRight = momRect.right - hitboxReduce;
+    const momTop = momRect.top + hitboxReduce;
+    const momBottom = momRect.bottom - hitboxReduce;
+
     if(
-        girlRect.right > momRect.left &&
-        girlRect.left < momRect.right &&
-        girlRect.bottom > momRect.top &&
-        girlRect.top < momRect.bottom
+        girlRight > momLeft &&
+        girlLeft < momRight &&
+        girlBottom > momTop &&
+        girlTop < momBottom
     ){
         momVictory();
     }
 }
 
-// MOM WIN POPUP
+// MOM WIN
 function momVictory(){
 
     gameOver = true;
@@ -129,7 +141,7 @@ function momVictory(){
 
             <img src="mother.png" class="winner-photo">
 
-            <h2>👑 MOM WINS 👑</h2>
+            <h2>👑 Wo Wo MOM WINS 👑</h2>
 
             <p>💜💕😍 Mother Caught Her 😭</p>
 
@@ -143,7 +155,7 @@ function momVictory(){
     document.body.appendChild(popup);
 }
 
-// GIRL WIN POPUP
+// GIRL WIN
 function girlVictory(){
 
     gameOver = true;
