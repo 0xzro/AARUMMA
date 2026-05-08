@@ -1,192 +1,125 @@
-// script.js
+/* style.css */
 
-const girl = document.getElementById("girl");
-const mom = document.getElementById("mom");
-const scoreText = document.getElementById("score");
-const jumpBtn = document.getElementById("jumpBtn");
-
-let jumping = false;
-let score = 0;
-let gameOver = false;
-
-// GAME SPEED
-let gameSpeed = 5.5;
-
-// MOM POSITION
-let momPosition = -160;
-
-// SMALLER HITBOX
-const hitboxReduce = 20;
-
-// JUMP BUTTON
-jumpBtn.addEventListener("click", function(){
-
-    if(jumping || gameOver) return;
-
-    jumping = true;
-
-    let position = 20;
-
-    // SMOOTH JUMP UP
-    const jumpUp = setInterval(function(){
-
-        if(position >= 200){
-
-            clearInterval(jumpUp);
-
-            // SMOOTH FALL
-            let fallSpeed = 6;
-
-            const jumpDown = setInterval(function(){
-
-                position -= fallSpeed;
-
-                // GRAVITY EFFECT
-                fallSpeed += 0.7;
-
-                girl.style.bottom = position + "px";
-
-                // LANDING
-                if(position <= 20){
-
-                    clearInterval(jumpDown);
-
-                    // SOFT LANDING EFFECT
-                    girl.style.bottom = "16px";
-
-                    setTimeout(() => {
-                        girl.style.bottom = "20px";
-                    },60);
-
-                    jumping = false;
-                }
-
-            },20);
-
-        }
-
-        position += 16;
-
-        girl.style.bottom = position + "px";
-
-    },15);
-
-});
-
-// GAME LOOP
-function moveMom(){
-
-    if(gameOver) return;
-
-    momPosition += gameSpeed;
-
-    mom.style.right = momPosition + "px";
-
-    // RESET
-    if(momPosition > window.innerWidth){
-
-        momPosition = -160;
-
-        score++;
-
-        scoreText.innerHTML = "Score: " + score;
-
-        // SLOW SPEED INCREASE
-        if(gameSpeed < 13){
-            gameSpeed += 0.25;
-        }
-
-        // WIN
-        if(score >= 2){
-            girlVictory();
-        }
-    }
-
-    checkCollision();
-
-    requestAnimationFrame(moveMom);
+body{
+    margin:0;
+    padding:0;
+    background:#000;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    text-align:center;
+    color:white;
 }
 
-moveMom();
-
-// COLLISION
-function checkCollision(){
-
-    const girlRect = girl.getBoundingClientRect();
-    const momRect = mom.getBoundingClientRect();
-
-    const girlLeft = girlRect.left + hitboxReduce;
-    const girlRight = girlRect.right - hitboxReduce;
-    const girlTop = girlRect.top + hitboxReduce;
-    const girlBottom = girlRect.bottom - hitboxReduce;
-
-    const momLeft = momRect.left + hitboxReduce;
-    const momRight = momRect.right - hitboxReduce;
-    const momTop = momRect.top + hitboxReduce;
-    const momBottom = momRect.bottom - hitboxReduce;
-
-    if(
-        girlRight > momLeft &&
-        girlLeft < momRight &&
-        girlBottom > momTop &&
-        girlTop < momBottom
-    ){
-        momVictory();
-    }
+h1{
+    margin-top:15px;
+    font-size:40px;
+    color:#d580ff;
 }
 
-// MOM WIN
-function momVictory(){
-
-    gameOver = true;
-
-    const popup = document.createElement("div");
-
-    popup.className = "victory-popup";
-
-    popup.innerHTML = `
-        <div class="victory-card">
-
-            <img src="mother.png" class="winner-photo">
-
-            <h2>👑 MOM WINS 👑</h2>
-
-            <p>💜💕😍 Mother Caught Her 😭</p>
-
-            <button id="restartBtn" onclick="location.reload()">
-                PLAY AGAIN 🔥
-            </button>
-
-        </div>
-    `;
-
-    document.body.appendChild(popup);
+#game{
+    position:relative;
+    width:100%;
+    height:420px;
+    margin-top:20px;
+    overflow:hidden;
+    border-top:3px solid #b84dff;
+    border-bottom:3px solid #b84dff;
 }
 
-// GIRL WIN
-function girlVictory(){
+/* GIRL SIZE */
+#girl{
+    position:absolute;
+    width:85px;
+    height:85px;
+    left:40px;
+    bottom:20px;
+    border-radius:25px;
+    border:4px solid white;
+    object-fit:cover;
+    background:#111;
+}
 
-    gameOver = true;
+/* SMALLER MOM SIZE */
+#mom{
+    position:absolute;
+    width:55px;
+    height:55px;
+    right:-120px;
+    bottom:20px;
+    border-radius:18px;
+    border:3px solid #ff66ff;
+    object-fit:cover;
+    background:#111;
+}
 
-    const popup = document.createElement("div");
+#score{
+    margin-top:25px;
+    font-size:35px;
+    font-weight:bold;
+}
 
-    popup.className = "victory-popup";
+#jumpBtn{
+    margin-top:25px;
+    padding:18px 60px;
+    border:none;
+    border-radius:25px;
+    background:#00ff99;
+    color:black;
+    font-size:28px;
+    font-weight:bold;
+}
 
-    popup.innerHTML = `
-        <div class="victory-card">
+/* POPUP */
+.victory-popup{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
 
-            <img src="girl.png" class="winner-photo">
+.victory-card{
+    width:85%;
+    max-width:350px;
+    background:#111;
+    border:3px solid #b84dff;
+    border-radius:35px;
+    padding:30px;
+    text-align:center;
+}
 
-            <h2>💜 LOVE ESCAPE 💜</h2>
+.winner-photo{
+    width:140px;
+    height:140px;
+    border-radius:25px;
+    border:4px solid white;
+    object-fit:cover;
+    background:#222;
+    margin-bottom:20px;
+}
 
-            <p>✨🥳💕 She Escaped Successfully 💕</p>
+.victory-card h2{
+    font-size:32px;
+    margin:10px 0;
+}
 
-            <button id="restartBtn" onclick="location.reload()">
-                PLAY AGAIN 🔥
-            </button>
+.victory-card p{
+    font-size:22px;
+    color:#d580ff;
+}
 
-        </div>
-    `;
-
-    document.body.appendChild(popup);
-} 
+#restartBtn{
+    margin-top:20px;
+    padding:15px 35px;
+    border:none;
+    border-radius:20px;
+    background:#00ff99;
+    color:black;
+    font-size:22px;
+    font-weight:bold;
+}
