@@ -11,6 +11,9 @@ let gameOver = false;
 
 let momPosition = -120;
 
+// START SLOW
+let gameSpeed = 3;
+
 // JUMP
 jumpBtn.addEventListener("click", function(){
 
@@ -29,10 +32,13 @@ jumpBtn.addEventListener("click", function(){
             const jumpDown = setInterval(function(){
 
                 position -= 10;
+
                 girl.style.bottom = position + "px";
 
                 if(position <= 20){
+
                     clearInterval(jumpDown);
+
                     jumping = false;
                 }
 
@@ -41,21 +47,24 @@ jumpBtn.addEventListener("click", function(){
         }
 
         position += 10;
+
         girl.style.bottom = position + "px";
 
     },20);
 
 });
 
-// MOM MOVE
+// MOM MOVEMENT
 function moveMom(){
 
     if(gameOver) return;
 
-    momPosition += 8;
+    // MOVE MOM
+    momPosition += gameSpeed;
 
     mom.style.right = momPosition + "px";
 
+    // RESET AFTER CROSSING SCREEN
     if(momPosition > window.innerWidth){
 
         momPosition = -120;
@@ -64,6 +73,12 @@ function moveMom(){
 
         scoreText.innerHTML = "Score: " + score;
 
+        // SPEED INCREASE SLOWLY
+        if(gameSpeed < 12){
+            gameSpeed += 0.5;
+        }
+
+        // GIRL WIN
         if(score >= 15){
             girlVictory();
         }
@@ -80,6 +95,7 @@ moveMom();
 function checkCollision(){
 
     const girlRect = girl.getBoundingClientRect();
+
     const momRect = mom.getBoundingClientRect();
 
     if(
