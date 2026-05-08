@@ -3,25 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KURUNYA - AARUNYA</title>
+  <title>LOVE ESCAPE 💜</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>KURUNYA 🍑</h1>
-<p>Dino: AARUNYA</p>
+<h1>LOVE ESCAPE 💜</h1>
 
 <div class="game">
-  <div id="dino">🍑</div>
-  <div id="block">💜</div>
-  <div id="gameOver" class="hidden">💨🤣 Kushii Over da Maplle!</div>
+
+  <div id="player">
+    <img src="girl.png">
+  </div>
+
+  <div id="enemy">
+    <img src="mother.png">
+  </div>
+
 </div>
 
 <h2 id="score">Score: 0</h2>
 
-<button id="jumpBtn">JUMP 🚀</button>
-<button id="restartBtn" class="hidden">RESTART 🔄</button>
+<button onclick="jump()">JUMP 🚀</button>
 
 <script src="script.js"></script>
+
 </body>
 </html>
