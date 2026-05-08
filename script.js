@@ -9,12 +9,13 @@ let jumping = false;
 let score = 0;
 let gameOver = false;
 
-let momPosition = -120;
-
-// START SLOW
+// START SPEED
 let gameSpeed = 3;
 
-// JUMP
+// MOM START POSITION
+let momPosition = -120;
+
+// JUMP SYSTEM
 jumpBtn.addEventListener("click", function(){
 
     if(jumping || gameOver) return;
@@ -23,15 +24,17 @@ jumpBtn.addEventListener("click", function(){
 
     let position = 20;
 
+    // JUMP UP
     const jumpUp = setInterval(function(){
 
-        if(position >= 220){
+        if(position >= 180){
 
             clearInterval(jumpUp);
 
+            // FALL DOWN
             const jumpDown = setInterval(function(){
 
-                position -= 10;
+                position -= 14;
 
                 girl.style.bottom = position + "px";
 
@@ -39,22 +42,24 @@ jumpBtn.addEventListener("click", function(){
 
                     clearInterval(jumpDown);
 
+                    girl.style.bottom = "20px";
+
                     jumping = false;
                 }
 
-            },20);
+            },15);
 
         }
 
-        position += 10;
+        position += 14;
 
         girl.style.bottom = position + "px";
 
-    },20);
+    },15);
 
 });
 
-// MOM MOVEMENT
+// MAIN GAME LOOP
 function moveMom(){
 
     if(gameOver) return;
@@ -64,18 +69,20 @@ function moveMom(){
 
     mom.style.right = momPosition + "px";
 
-    // RESET AFTER CROSSING SCREEN
+    // IF MOM CROSSES SCREEN
     if(momPosition > window.innerWidth){
 
+        // RESET POSITION
         momPosition = -120;
 
+        // INCREASE SCORE
         score++;
 
         scoreText.innerHTML = "Score: " + score;
 
-        // SPEED INCREASE SLOWLY
-        if(gameSpeed < 12){
-            gameSpeed += 0.5;
+        // SLOWLY INCREASE SPEED
+        if(gameSpeed < 14){
+            gameSpeed += 0.4;
         }
 
         // GIRL WIN
@@ -91,7 +98,7 @@ function moveMom(){
 
 moveMom();
 
-// COLLISION
+// COLLISION DETECTION
 function checkCollision(){
 
     const girlRect = girl.getBoundingClientRect();
@@ -108,7 +115,7 @@ function checkCollision(){
     }
 }
 
-// MOM WIN
+// MOM WIN POPUP
 function momVictory(){
 
     gameOver = true;
@@ -136,7 +143,7 @@ function momVictory(){
     document.body.appendChild(popup);
 }
 
-// GIRL WIN
+// GIRL WIN POPUP
 function girlVictory(){
 
     gameOver = true;
