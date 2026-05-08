@@ -1,3 +1,5 @@
+// script.js
+
 const girl = document.getElementById("girl");
 const mom = document.getElementById("mom");
 const scoreText = document.getElementById("score");
@@ -9,7 +11,7 @@ let gameOver = false;
 
 let momPosition = -120;
 
-// JUMP BUTTON
+// JUMP
 jumpBtn.addEventListener("click", function(){
 
     if(jumping || gameOver) return;
@@ -45,12 +47,13 @@ jumpBtn.addEventListener("click", function(){
 
 });
 
-// MOM MOVEMENT
+// MOM MOVE
 function moveMom(){
 
     if(gameOver) return;
 
     momPosition += 8;
+
     mom.style.right = momPosition + "px";
 
     if(momPosition > window.innerWidth){
@@ -101,7 +104,7 @@ function momVictory(){
     popup.innerHTML = `
         <div class="victory-card">
 
-            <img src="mom.jpg" class="winner-photo">
+            <img src="mother.png" class="winner-photo">
 
             <h2>👑 MOM WINS 👑</h2>
 
@@ -129,7 +132,7 @@ function girlVictory(){
     popup.innerHTML = `
         <div class="victory-card">
 
-            <img src="girl.jpg" class="winner-photo">
+            <img src="girl.png" class="winner-photo">
 
             <h2>💜 LOVE ESCAPE 💜</h2>
 
